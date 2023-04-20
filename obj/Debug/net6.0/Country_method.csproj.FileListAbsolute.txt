@@ -1,0 +1,15 @@
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.csproj.AssemblyReference.cache
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.AssemblyInfoInputs.cache
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.AssemblyInfo.cs
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.csproj.CoreCompileInputs.cache
+/Users/gnemirko/aux/Country_method/Country_method/bin/Debug/net6.0/Country_method
+/Users/gnemirko/aux/Country_method/Country_method/bin/Debug/net6.0/Country_method.deps.json
+/Users/gnemirko/aux/Country_method/Country_method/bin/Debug/net6.0/Country_method.runtimeconfig.json
+/Users/gnemirko/aux/Country_method/Country_method/bin/Debug/net6.0/Country_method.dll
+/Users/gnemirko/aux/Country_method/Country_method/bin/Debug/net6.0/Country_method.pdb
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.dll
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/refint/Country_method.dll
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.pdb
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/Country_method.genruntimeconfig.cache
+/Users/gnemirko/aux/Country_method/Country_method/obj/Debug/net6.0/ref/Country_method.dll
