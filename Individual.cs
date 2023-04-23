@@ -11,7 +11,26 @@ public class Individual
         get => _id;
     }
 
-    private double _x;
+    private List<double> _variables = new List<double>();
+
+    private int _amountVar;
+
+    public int AmountVar
+    {
+        get => _amountVar;
+        set => _amountVar = value;
+    }
+
+    public List<double> Variables
+    {
+        get => _variables;
+        set => _variables = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+    public double getVar(int index)
+    {
+        return _variables[index];
+    }
 
     private int _epidemicSurvived;
 
@@ -20,12 +39,17 @@ public class Individual
         get => _epidemicSurvived;
         set => _epidemicSurvived = value;
     }
-
-    public Individual()
+    
+    
+    public Individual(int amountVar)
     {
         _id = Guid.NewGuid();
-        _x = GetRandomDouble(-512, 512);
-        _y = GetRandomDouble(-512, 512);
+        for (int i = 0; i < amountVar; i++)
+        {
+            _variables.Add(GetRandomDouble(-512, 512));
+        }
+
+        _amountVar = amountVar;
         CalculateFunc();
         _epidemicSurvived = 0;
     }
@@ -36,65 +60,35 @@ public class Individual
         int tMax, int tCurrent)
     {
         _id = Guid.NewGuid();
-        _x = father.x;
-        _y = mother.y;
-
+        
+        
         double p = ((pMax - pMin) * (1 - tCurrent / tMax) * (fAvg - fMin) / (fMax - fMin)) + pMin;
 
-        if (Double.IsNaN(p))
+        _amountVar = father.AmountVar;
+        for (int i = 0; i < _amountVar; i++)
         {
-            Console.WriteLine("Pizdec");
-        }
+            if (i % 2 == 0) 
+            {
+                _variables.Add(father.getVar(i));
+                _variables[i] = father.getVar(i) + GetRandomDouble(-p * _variables[i], p * _variables[i]);
+            }
+            else
+            {
+                _variables.Add(mother.getVar(i));
+                _variables[i] = mother.getVar(i) + GetRandomDouble(-p * _variables[i], p * _variables[i]);
+            }
 
-        _x = father.x + GetRandomDouble(-p * _x, p * _x);
-        if (_x < -512)
-        {
-            _x = -512;
+            if (_variables[i] > 512)
+            {
+                _variables[i] = 512;
+            } else if (_variables[i] < -512)
+            {
+                _variables[i] = -512;
+            }
         }
-        if (_x > 512)
-        {
-            _x = 512;
-        }
-        _y = mother.y + GetRandomDouble(-p * _y, p * _y);
-        if (_y < -512)
-        {
-            _y = -512;
-        }
-        if (_y > 512)
-        {
-            _y = 512;
-        }
-
-        if (double.IsNaN(_x))
-        {
-            _x = father.x + GetRandomDouble(-p * _x, p * _x);
-        }
-
         
         CalculateFunc();
         _epidemicSurvived = 0;
-    }
-    
-    public double x
-    {
-        get => _x;
-        set
-        { 
-            _x = value;
-            CalculateFunc();
-        }
-    }
-
-
-    private double _y;
-    public double y
-    {
-        get => _y;
-        set
-        {
-            _y = value;
-            CalculateFunc();
-        }
     }
     
     private double _f;
@@ -108,58 +102,36 @@ public class Individual
     {
         var rand = new Random();
 
-        _x = this._x + rand.NextDouble() * 2 * (leader.x - _x);
-        _y = this._y + rand.NextDouble() * 2 * (leader.y - _y);
+        for (int i = 0; i < _amountVar; i++)
+        {
+            _variables[i] = _variables[i] + rand.NextDouble() * 2 * (leader.getVar(i) - _variables[i]);
+            
+            if (_variables[i] > 512)
+            {
+                _variables[i] = 512;
+            } else if (_variables[i] < -512)
+            {
+                _variables[i] = -512;
+            }
+        }
 
-        if (_x < -512)
-        {
-            _x = -512;
-        }
-        if (_x > 512)
-        {
-            _x = 512;
-        }
-        if (_y < -512)
-        {
-            _y = -512;
-        }
-        if (_y > 512)
-        {
-            _y = 512;
-        }
-        
         CalculateFunc();
     }
 
     public void FallIll(double pMax)
     {
-        if (_epidemicSurvived != 0)
+
+        for (int i = 0; i < _amountVar; i++)
         {
-            _x = pMax * GetRandomDouble(-1 * _x, _x)/_epidemicSurvived;
-            _y = pMax * GetRandomDouble(-1 * _y, _y)/_epidemicSurvived;
+            if (_epidemicSurvived != 0)
+            {
+                _variables[i]= pMax * GetRandomDouble(-1 * _variables[i], _variables[i])/_epidemicSurvived;
+            }
+            else
+            {
+                _variables[i] = pMax * GetRandomDouble(-1 * _variables[i], _variables[i]);
+            }
         }
-        else
-        {
-            _x = pMax * GetRandomDouble(-1 * _x, _x);
-            _y = pMax * GetRandomDouble(-1 * _y, _y);
-        }
-        if (_x < -512)
-        {
-            _x = -512;
-        }
-        if (_x > 512)
-        {
-            _x = 512;
-        }
-        if (_y < -512)
-        {
-            _y = -512;
-        }
-        if (_y > 512)
-        {
-            _y = 512;
-        }
-        
         _epidemicSurvived++;
     }
     
@@ -179,6 +151,12 @@ public class Individual
     
     public void CalculateFunc()
     {
-        _f = -(_y + 47) * Math.Sin(Math.Sqrt(Math.Abs(_y + _x / 2 + 47))) - _x * Math.Sin(Math.Sqrt(Math.Abs(_x - (_y + 47))));
+        double xPrevious = _variables.First();
+        for (int i = 1; i < _variables.Count; i++)
+        {
+            _f = -( _variables[i] + 47) * Math.Sin(Math.Sqrt(Math.Abs( _variables[i] + xPrevious / 2 + 47))) - xPrevious * Math.Sin(Math.Sqrt(Math.Abs(xPrevious - (_variables[i] + 47))));
+            xPrevious = _variables[i];
+        }
+        
     }
 }

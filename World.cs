@@ -32,7 +32,8 @@ public class World
         int tMax,
         double die, double survive, 
         int mMax, int mMin, int unionAmount, int population, int countryAmount,
-        int amountExchange, int warriorAmount)
+        int amountExchange, int warriorAmount,
+        int amountVar)
     {
         _pMax = pMax;
         _pMin = pMin;
@@ -49,7 +50,7 @@ public class World
         for (int i = 0; i < unionAmount; i++)
         {
             int countryPerZone = countryAmount / unionAmount;
-            _society.Add(new Zone(countryPerZone, population));
+            _society.Add(new Zone(countryPerZone, population, amountVar));
         }
 
         _theBestAverage = _society[0].BestCountryAverage;

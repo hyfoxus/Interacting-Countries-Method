@@ -23,11 +23,11 @@ public class Zone
         get => _bestCountryAverage;
     }
 
-    public Zone(int zoneAmount, int countryPopulation)
+    public Zone(int zoneAmount, int countryPopulation, int amountVar)
     {
         for (int i = 0; i < zoneAmount; i++)
         {
-            _union.Add(new Country(countryPopulation));
+            _union.Add(new Country(countryPopulation, amountVar));
         }
 
         _bestCountryAverage = _union[0].AverageObjectiveFunc;

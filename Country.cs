@@ -29,11 +29,11 @@ public class Country
         get => _isAlive;
     }
     
-    public Country(int population)
+    public Country(int population, int amountVar)
     {
         for (int i = 0; i < population; i++)
         {
-            _citizens.Add(new Individual());
+            _citizens.Add(new Individual(amountVar));
         }
         
         _population = _citizens.Count;
@@ -233,19 +233,21 @@ public class Country
 
     public void Epidemic(double die, double survive, double pMax)
     {
-        foreach (var citizen in _citizens.ToList())
+
+        _citizens.OrderBy(o => o.f);
+        _citizens.OrderBy(o => o.f);
+        for (int i = 0; i < _citizens.Count; i++)
         {
-            var rand = new Random();
-            if (rand.NextDouble() < survive)
+            if (i < die * _citizens.Count)
             {
-                citizen.EpidemicSurvived++;
-            } else if (rand.NextDouble() < survive + die)
+                _citizens.Remove(_citizens[i]);
+            } else if (i < (1 - survive) * _citizens.Count)
             {
-                _citizens.Remove(citizen);
+                _citizens[i].FallIll(pMax);
             }
             else
             {
-               citizen.FallIll(pMax); 
+                _citizens[i].EpidemicSurvived++;
             }
         }
         UpdateBestCitizen();
