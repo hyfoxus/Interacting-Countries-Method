@@ -157,7 +157,7 @@ public class Individual
     public void CalculateFunc()
     {
         _f = 0;
-        for (int i = 1; i < _variables.Count - 1; i++)
+        for (int i = 0; i < _variables.Count - 1; i++)
         {
             _f += -( _variables[i + 1] + 47) * Math.Sin(Math.Sqrt(Math.Abs( _variables[i + 1] + _variables[i] / 2 + 47))) - _variables[i] * Math.Sin(Math.Sqrt(Math.Abs(_variables[i] - (_variables[i + 1] + 47))));
         }
