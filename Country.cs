@@ -235,7 +235,6 @@ public class Country
     {
 
         _citizens.OrderBy(o => o.f);
-        _citizens.OrderBy(o => o.f);
         for (int i = 0; i < _citizens.Count; i++)
         {
             if (i < die * _citizens.Count)
@@ -250,6 +249,7 @@ public class Country
                 _citizens[i].EpidemicSurvived++;
             }
         }
+        
         UpdateBestCitizen();
         UpdateAverageFunc();
     }

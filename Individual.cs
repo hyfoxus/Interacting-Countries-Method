@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Cryptography;
 
 namespace Country_method;
@@ -131,6 +132,14 @@ public class Individual
             {
                 _variables[i] = pMax * GetRandomDouble(-1 * _variables[i], _variables[i]);
             }
+            
+            if (_variables[i] > 512)
+            {
+                _variables[i] = 512;
+            } else if (_variables[i] < -512)
+            {
+                _variables[i] = -512;
+            }
         }
         _epidemicSurvived++;
     }
@@ -142,21 +151,16 @@ public class Individual
         var rDouble = rand.NextDouble();
         
         var rMod = rDouble * (upperBound - lowerBound) + lowerBound;
-        
-        {
-            
-        }
         return rMod;
     }
     
     public void CalculateFunc()
     {
-        double xPrevious = _variables.First();
-        for (int i = 1; i < _variables.Count; i++)
+        _f = 0;
+        for (int i = 1; i < _variables.Count - 1; i++)
         {
-            _f = -( _variables[i] + 47) * Math.Sin(Math.Sqrt(Math.Abs( _variables[i] + xPrevious / 2 + 47))) - xPrevious * Math.Sin(Math.Sqrt(Math.Abs(xPrevious - (_variables[i] + 47))));
-            xPrevious = _variables[i];
+            _f += -( _variables[i + 1] + 47) * Math.Sin(Math.Sqrt(Math.Abs( _variables[i + 1] + _variables[i] / 2 + 47))) - _variables[i] * Math.Sin(Math.Sqrt(Math.Abs(_variables[i] - (_variables[i + 1] + 47))));
         }
-        
+
     }
 }
