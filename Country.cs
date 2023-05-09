@@ -18,7 +18,7 @@ public class Country
     {
         get => _averageObjectiveFunc;
     }
-
+    
     public int Population
     {
         get => _population;

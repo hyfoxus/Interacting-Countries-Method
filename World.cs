@@ -4,6 +4,8 @@ public class World
 {
     private List<Zone> _society = new List<Zone>();
 
+    public long funcInvoked = 0;
+    
     private double _theWorstAverage;
     private double _theBestAverage;
 
@@ -60,12 +62,24 @@ public class World
 
     }
 
+    private void CountFuncInvoked(int didHappen)
+    {
+        funcInvoked++;
+    }
+    
     public double StartTheSimulation()
     {
         for (int i = 0; i < _tMax; i++)
         {
             foreach (var union in _society)
             {
+                foreach (var country in union.GetAllCountries())
+                {
+                    foreach (var citizen in country.GetAllCitizens())
+                    {
+                        citizen.FuncUsedEvent += CountFuncInvoked;
+                    }
+                }
                 union.DistributeEvents(_die, _survive, _pMax, _amountExchange, _warriorAmount);
                 union.StartHorny(_pMax, _pMin, _nMax, _nMin, _theBestAverage, _theWorstAverage, _tMax, i);
                 union.StartPurge(_mMax, _mMin, _theBestAverage, _theWorstAverage);

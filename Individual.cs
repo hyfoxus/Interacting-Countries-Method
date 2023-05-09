@@ -16,6 +16,10 @@ public class Individual
 
     private int _amountVar;
 
+    public delegate void FuncUsedEventHandler(int didHappen);
+
+    public event FuncUsedEventHandler FuncUsedEvent; 
+
     public int AmountVar
     {
         get => _amountVar;
@@ -119,6 +123,11 @@ public class Individual
         CalculateFunc();
     }
 
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pMax"></param>
     public void FallIll(double pMax)
     {
 
@@ -141,6 +150,7 @@ public class Individual
                 _variables[i] = -512;
             }
         }
+        CalculateFunc();
         _epidemicSurvived++;
     }
     
@@ -161,6 +171,9 @@ public class Individual
         {
             _f += -( _variables[i + 1] + 47) * Math.Sin(Math.Sqrt(Math.Abs( _variables[i + 1] + _variables[i] / 2 + 47))) - _variables[i] * Math.Sin(Math.Sqrt(Math.Abs(_variables[i] - (_variables[i + 1] + 47))));
         }
-
+        FuncUsedEvent?.Invoke(1);
     }
+    
+    
+    
 }
