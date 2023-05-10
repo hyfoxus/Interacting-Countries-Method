@@ -233,23 +233,21 @@ public class Country
 
     public void Epidemic(double die, double survive, double pMax)
     {
-
-        _citizens.OrderBy(o => o.f);
-        for (int i = 0; i < _citizens.Count; i++)
+        foreach (var citizen in _citizens.ToList())
         {
-            if (i < die * _citizens.Count)
+            var rand = new Random();
+            if (rand.NextDouble() < survive)
             {
-                _citizens.Remove(_citizens[i]);
-            } else if (i < (1 - survive) * _citizens.Count)
+                citizen.EpidemicSurvived++;
+            } else if (rand.NextDouble() < survive + die)
             {
-                _citizens[i].FallIll(pMax);
+                _citizens.Remove(citizen);
             }
             else
             {
-                _citizens[i].EpidemicSurvived++;
+                citizen.FallIll(pMax); 
             }
         }
-        
         UpdateBestCitizen();
         UpdateAverageFunc();
     }
